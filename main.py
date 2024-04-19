@@ -18,7 +18,7 @@ size = 300
 
 player = 1
 
-bot_player = 2
+bot_player = 1
 
 mode = 'bot'
 
@@ -28,12 +28,12 @@ lost_state = []
 
 
 class Button:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.rect = pygame.Rect(self.x, self.y, 150, 50)
+    def __init__(self):
+        self.rect = pygame.Rect(size * 3, 150, 150, 50)
     def draw(self):
         global mode
+        # update position
+        self.rect = pygame.Rect(size * 3, 150, 150, 50)
         if mode == 'bot':
             pygame.draw.rect(screen, (100, 100, 100), self.rect)
         else:
@@ -198,6 +198,12 @@ def bot():
             if board[8] is None:
                 return 8
 
+    # corner-edge trap
+    if board[5] == board[6]:
+        if board[5] is not None:
+            if board[8] is None:
+                return 8
+
 
     if priority == 'edge':
         value = check_edges()
@@ -246,7 +252,7 @@ def random_bot():
         if board[value] is None:
             return value
 
-button = Button(size * 3, 150)
+button = Button()
 
 clock = pygame.time.Clock()
 
@@ -261,13 +267,13 @@ while run:
         screen.blit(font_thingy, (size * 3, 40 * index))
 
     if winner is not None:
-        if winner == 1:
+        if winner == (bot_player % 2 + 1):
             # pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(0, 0, SIZE * 3.2, SIZE * 3.2))
             screen.fill((0, 0, 255))
             losses += 1
             lost_state = board.copy()
             board = [None for _ in range(9)]
-        elif winner == 2:
+        elif winner == bot_player:
             # pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(0, 0, SIZE * 3.2, SIZE * 3.2))
             screen.fill((0, 255, 0))
             wins += 1
