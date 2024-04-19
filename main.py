@@ -26,6 +26,7 @@ wins, losses, draws = 0, 0, 0
 
 lost_state = []
 
+
 class Button:
     def __init__(self, x, y):
         self.x = x
