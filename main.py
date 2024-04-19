@@ -137,16 +137,8 @@ def check_edges():
             return 1 + (2 * value)
     return False
 
+
 def check_corners():
-    # # top corners
-    # for value in range(2):
-    #     if board[value * 2] is None:
-    #         return value * 2
-    #
-    # # bottom corners
-    # for value in range(2):
-    #     if board[6 + (value * 2)] is None:
-    #         return 6 + (value * 2)
     if board[0] is None:
         return 0
     if board[8] is None:
@@ -190,13 +182,21 @@ def bot():
         return 4
 
     # corner traps
-    if board[1] != 0:
+    if board[1] is not None:
         if board[3] == board[1]:
-            if board[0] == 0:
+            if board[0] is None:
                 return 0
         if board[5] == board[1]:
-            if board[0] == 0:
-                return 0
+            if board[2] is None:
+                return 2
+    if board[7] is not None:
+        if board[3] == board[7]:
+            if board[4] is None:
+                return 4
+        if board[5] == board[7]:
+            if board[8] is None:
+                return 8
+
 
     if priority == 'edge':
         value = check_edges()
@@ -247,7 +247,10 @@ def random_bot():
 
 button = Button(size * 3, 150)
 
+clock = pygame.time.Clock()
+
 while run:
+    dt = clock.tick()
     screen.fill((75, 75, 75))
     draw_board()
     button.draw()
@@ -299,6 +302,7 @@ while run:
 
     for event in pygame.event.get():
         if event.type == QUIT:
+            print(lost_state)
             pygame.quit()
             sys.exit()
         elif event.type == VIDEORESIZE:
