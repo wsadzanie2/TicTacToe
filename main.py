@@ -33,6 +33,22 @@ wins, losses, draws = 0, 0, 0
 
 lost_state = []
 
+
+def reverseEnum(data: list):
+    for i in range(len(data)-1, -1, -1):
+        yield (i, data[i])
+
+def convert_number_to_string(number: int, precision = 0):
+    endings = ['', 'k', 'mln', 'mld']
+    for index, value in reverseEnum(endings):
+        if index == 0:
+            return
+        if number >= 1000**index:
+            if precision == 0:
+                return f'{int(number / (1000**index))}{value}'
+            return f'{round(number / (1000**index), precision)}{value}'
+
+
 class Button:
     def __init__(self, func=lambda: None):
         self.rect = pygame.Rect(size * 3, 150, 150, 50)
@@ -334,7 +350,8 @@ while run:
             draws += 1
             board = [None for _ in range(9)]
         if mode == 'bots':
-            print('-------------')
+            # print(f'--------({(wins + losses + draws) // 1000}k)--------')
+            print(f'--------({convert_number_to_string(wins + losses + draws, 2)})--------')
             print(f'GPS: {round((wins + losses + draws) / (time.time() - start_time))}')
             print(f'wins: {wins}')
             print(f'draws: {draws}')
