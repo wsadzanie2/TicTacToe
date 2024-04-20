@@ -22,6 +22,8 @@ player = 1
 
 bot_player = 2
 
+start_time = time.time()
+
 mode = 'bot'
 
 if not visuals:
@@ -32,30 +34,29 @@ wins, losses, draws = 0, 0, 0
 lost_state = []
 
 class Button:
-    def __init__(self):
+    def __init__(self, func=lambda: None):
         self.rect = pygame.Rect(size * 3, 150, 150, 50)
+        self.func = func
+        self.y = 150
+        self.color_a = (100, 100, 100)
+        self.color_b = (0, 100, 100)
+        self.color_c = (0, 90, 90)
     def draw(self):
         if not visuals:
             return
         global mode
         # update position
-        self.rect = pygame.Rect(size * 3, 150, 150, 50)
+        self.rect = pygame.Rect(size * 3, self.y, 150, 50)
         if mode == 'bot':
-            pygame.draw.rect(screen, (100, 100, 100), self.rect)
+            pygame.draw.rect(screen, self.color_a, self.rect)
+        elif mode == 'players':
+            pygame.draw.rect(screen, self.color_b, self.rect)
         else:
-            pygame.draw.rect(screen, (0, 100, 100), self.rect)
+            pygame.draw.rect(screen, self.color_c, self.rect)
     def update(self, event):
         if event.type == MOUSEBUTTONDOWN:
             if self.rect.collidepoint(pygame.mouse.get_pos()):
-                global mode, board, wins, draws, losses
-                board = [None for _ in range(9)]
-                wins, draws, losses = 0, 0, 0
-                if mode == 'bot':
-                    mode = 'players'
-                elif mode == 'players':
-                    mode = 'bots'
-                elif mode == 'bots':
-                    mode = 'bot'
+                self.func()
 
 def draw_x(x, y, width, height, thiccness=1):
     for i in range(5):
@@ -212,6 +213,11 @@ def bot():
             if board[8] is None:
                 return 8
 
+    # nice way to win
+    if board[3] == board[8] and board[3] is not None:
+        if board[2] is None and board[0] is not None:
+            return 2
+
 
     if priority == 'edge':
         value = check_edges()
@@ -260,10 +266,41 @@ def random_bot():
         if board[value] is None:
             return value
 
-if visuals:
-    button = Button()
 
-    clock = pygame.time.Clock()
+### BUTTON STUFF ###
+
+
+def button_func():
+    global mode, board, wins, draws, losses
+    board = [None for _ in range(9)]
+    wins, draws, losses = 0, 0, 0
+    if mode == 'bot':
+        mode = 'players'
+    elif mode == 'players':
+        mode = 'bots'
+    elif mode == 'bots':
+        mode = 'bot'
+
+
+button = Button(button_func)
+
+
+def turn_off_ui_function():
+    global visuals, mode, board, winner, start_time
+    visuals = False
+    pygame.quit()
+    if mode != 'bots':
+        start_time = time.time()
+        mode = 'bots'
+        board = [None for _ in range(9)]
+        winner = None
+
+turn_off_ui_button = Button(turn_off_ui_function)
+turn_off_ui_button.y = 210
+turn_off_ui_button.color_b = turn_off_ui_button.color_a
+
+clock = pygame.time.Clock()
+
 
 while run:
     if visuals:
@@ -271,6 +308,7 @@ while run:
         screen.fill((75, 75, 75))
         draw_board()
         button.draw()
+        turn_off_ui_button.draw()
     winner = check_win()
     if visuals:
         for index, thingy in enumerate([f'wins: {wins}', f'draws: {draws}', f'losses: {losses}']):
@@ -296,10 +334,11 @@ while run:
             draws += 1
             board = [None for _ in range(9)]
         if mode == 'bots':
-            print('--------')
-            print(wins)
-            print(draws)
-            print(losses)
+            print('-------------')
+            print(f'GPS: {round((wins + losses + draws) / (time.time() - start_time))}')
+            print(f'wins: {wins}')
+            print(f'draws: {draws}')
+            print(f'losses: {losses}')
             winner = check_win()
     else:
         if player == bot_player and mode in ('bot', 'bots'):
@@ -330,4 +369,6 @@ while run:
                 size = min(x, y) // 3
             handle_presses(event)
             button.update(event)
-        pygame.display.flip()
+            turn_off_ui_button.update(event)
+        if visuals:
+            pygame.display.flip()
