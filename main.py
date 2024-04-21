@@ -44,7 +44,7 @@ def convert_number_to_string(number: int, precision=0):
     endings = ['', 'k', 'mln', 'mld']
     for index, value in reverseEnum(endings):
         if index == 0:
-            return
+            return str(round(number, precision))
         if number >= 1000 ** index:
             if precision == 0:
                 return f'{int(number / (1000 ** index))}{value}'
@@ -318,7 +318,8 @@ while run:
         turn_off_ui_button.draw()
     winner = check_win()
     if visuals:
-        for index, thingy in enumerate([f'wins: {wins}', f'draws: {draws}', f'losses: {losses}']):
+        # this variables are for the bot. We want to see data for you!
+        for index, thingy in enumerate([f'wins: {losses}', f'draws: {draws}', f'losses: {wins}']):
             font_thingy = font.render(thingy, False, (0, 0, 0))
             screen.blit(font_thingy, (size * 3, 40 * index))
 
@@ -344,9 +345,9 @@ while run:
             # print(f'--------({(wins + losses + draws) // 1000}k)--------')
             print(f'--------({convert_number_to_string(wins + losses + draws, 2)})--------')
             print(f'GPS: {round((wins + losses + draws) / (time.time() - start_time))}')
-            print(f'wins: {wins}')
-            print(f'draws: {draws}')
-            print(f'losses: {losses}')
+            print(f'wins: {convert_number_to_string(wins)}')
+            print(f'draws: {convert_number_to_string(draws)}')
+            print(f'losses: {convert_number_to_string(losses)}')
             if losses > 0:
                 print(lost_state[:3])
                 print(lost_state[3:6])
