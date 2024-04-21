@@ -223,11 +223,14 @@ def bot():
             if board[8] is None:
                 return 8
 
-    # corner-edge trap
+    # corner-edge traps
     if board[5] == board[6]:
         if board[5] is not None:
             if board[8] is None:
                 return 8
+    if board[2] == board[7] and board[2] is not None:
+        if board[8] is None:
+            return 8
 
     # nice way to win
     if board[3] == board[8] and board[3] is not None:
@@ -254,28 +257,28 @@ def bot():
 
 
 def random_bot():
-    for row in range(3):
-        if two_out_of_three_and_not_None(board[row * 3], board[row * 3 + 1], board[row * 3 + 2]):
-            for value in range(3):
-                if board[row * 3 + value] is None:
-                    return row * 3 + value
-
-    for column in range(3):
-        if two_out_of_three_and_not_None(board[column], board[column + 3], board[column + 6]):
-            for value in range(3):
-                if board[column + (3 * value)] is None:
-                    return column + (3 * value)
-
-    # diagonals
-    if two_out_of_three_and_not_None(board[0], board[4], board[8]):
-        for value in range(3):
-            if board[value * 4] is None:
-                return value * 4
-
-    if two_out_of_three_and_not_None(board[2], board[4], board[6]):
-        for value in range(3):
-            if board[(value * 2) + 2] is None:
-                return (value * 2) + 2
+    # for row in range(3):
+    #     if two_out_of_three_and_not_None(board[row * 3], board[row * 3 + 1], board[row * 3 + 2]):
+    #         for value in range(3):
+    #             if board[row * 3 + value] is None:
+    #                 return row * 3 + value
+    #
+    # for column in range(3):
+    #     if two_out_of_three_and_not_None(board[column], board[column + 3], board[column + 6]):
+    #         for value in range(3):
+    #             if board[column + (3 * value)] is None:
+    #                 return column + (3 * value)
+    #
+    # # diagonals
+    # if two_out_of_three_and_not_None(board[0], board[4], board[8]):
+    #     for value in range(3):
+    #         if board[value * 4] is None:
+    #             return value * 4
+    #
+    # if two_out_of_three_and_not_None(board[2], board[4], board[6]):
+    #     for value in range(3):
+    #         if board[(value * 2) + 2] is None:
+    #             return (value * 2) + 2
 
     while winner is None:
         value = random.randint(0, 8)
@@ -356,6 +359,11 @@ while run:
             print(f'wins: {wins}')
             print(f'draws: {draws}')
             print(f'losses: {losses}')
+            if losses > 0:
+                print(lost_state[:3])
+                print(lost_state[3:6])
+                print(lost_state[6:9])
+                sys.exit()
             winner = check_win()
     else:
         if player == bot_player and mode in ('bot', 'bots'):
