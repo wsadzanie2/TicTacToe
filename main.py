@@ -1,6 +1,7 @@
 import sys
 import random
 import time
+
 visuals = True
 if visuals:
     import pygame
@@ -35,18 +36,19 @@ lost_state = []
 
 
 def reverseEnum(data: list):
-    for i in range(len(data)-1, -1, -1):
+    for i in range(len(data) - 1, -1, -1):
         yield (i, data[i])
 
-def convert_number_to_string(number: int, precision = 0):
+
+def convert_number_to_string(number: int, precision=0):
     endings = ['', 'k', 'mln', 'mld']
     for index, value in reverseEnum(endings):
         if index == 0:
             return
-        if number >= 1000**index:
+        if number >= 1000 ** index:
             if precision == 0:
-                return f'{int(number / (1000**index))}{value}'
-            return f'{round(number / (1000**index), precision)}{value}'
+                return f'{int(number / (1000 ** index))}{value}'
+            return f'{round(number / (1000 ** index), precision)}{value}'
 
 
 class Button:
@@ -57,6 +59,8 @@ class Button:
         self.color_a = (100, 100, 100)
         self.color_b = (0, 100, 100)
         self.color_c = (0, 90, 90)
+        self.text = None
+
     def draw(self):
         if not visuals:
             return
@@ -69,10 +73,14 @@ class Button:
             pygame.draw.rect(screen, self.color_b, self.rect)
         else:
             pygame.draw.rect(screen, self.color_c, self.rect)
+        if self.text is not None:
+            screen.blit(font.render(self.text, False, (0, 0, 0)), (self.rect.x, self.rect.y))
+
     def update(self, event):
         if event.type == MOUSEBUTTONDOWN:
             if self.rect.collidepoint(pygame.mouse.get_pos()):
-                self.func()
+                self.func(self)
+
 
 def draw_x(x, y, width, height, thiccness=1):
     for i in range(5):
@@ -112,6 +120,8 @@ def check_draw():
         if box is None:
             return False
     return True
+
+
 def check_win():
     # check for a draw
     if check_draw():
@@ -156,7 +166,6 @@ def handle_presses(event):
                 player += 1
 
 
-
 def check_edges():
     for value in range(4):
         if board[1 + (2 * value)] is None:
@@ -175,6 +184,8 @@ def check_corners():
         return 2
 
     return False
+
+
 def bot():
     priority = 'corner'
     for row in range(3):
@@ -237,7 +248,6 @@ def bot():
         if board[2] is None and board[0] is not None:
             return 2
 
-
     if priority == 'edge':
         value = check_edges()
         if value:
@@ -257,29 +267,6 @@ def bot():
 
 
 def random_bot():
-    # for row in range(3):
-    #     if two_out_of_three_and_not_None(board[row * 3], board[row * 3 + 1], board[row * 3 + 2]):
-    #         for value in range(3):
-    #             if board[row * 3 + value] is None:
-    #                 return row * 3 + value
-    #
-    # for column in range(3):
-    #     if two_out_of_three_and_not_None(board[column], board[column + 3], board[column + 6]):
-    #         for value in range(3):
-    #             if board[column + (3 * value)] is None:
-    #                 return column + (3 * value)
-    #
-    # # diagonals
-    # if two_out_of_three_and_not_None(board[0], board[4], board[8]):
-    #     for value in range(3):
-    #         if board[value * 4] is None:
-    #             return value * 4
-    #
-    # if two_out_of_three_and_not_None(board[2], board[4], board[6]):
-    #     for value in range(3):
-    #         if board[(value * 2) + 2] is None:
-    #             return (value * 2) + 2
-
     while winner is None:
         value = random.randint(0, 8)
         if board[value] is None:
@@ -289,22 +276,22 @@ def random_bot():
 ### BUTTON STUFF ###
 
 
-def button_func():
+def button_func(self):
     global mode, board, wins, draws, losses
     board = [None for _ in range(9)]
     wins, draws, losses = 0, 0, 0
     if mode == 'bot':
         mode = 'players'
+        self.text = 'player'
     elif mode == 'players':
-        mode = 'bots'
-    elif mode == 'bots':
         mode = 'bot'
+        self.text = 'bot'
 
 
 button = Button(button_func)
+button.text = 'bot'
 
-
-def turn_off_ui_function():
+def turn_off_ui_function(self):
     global visuals, mode, board, winner, start_time
     visuals = False
     pygame.quit()
@@ -314,12 +301,13 @@ def turn_off_ui_function():
         board = [None for _ in range(9)]
         winner = None
 
+
 turn_off_ui_button = Button(turn_off_ui_function)
 turn_off_ui_button.y = 210
 turn_off_ui_button.color_b = turn_off_ui_button.color_a
+turn_off_ui_button.text = 'TUI'
 
 clock = pygame.time.Clock()
-
 
 while run:
     if visuals:
