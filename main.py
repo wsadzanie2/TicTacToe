@@ -344,7 +344,7 @@ while run:
         if mode == 'bots':
             # print(f'--------({(wins + losses + draws) // 1000}k)--------')
             print(f'--------({convert_number_to_string(wins + losses + draws, 2)})--------')
-            print(f'GPS: {round((wins + losses + draws) / (time.time() - start_time))}')
+            print(f'GPS: {convert_number_to_string(int(wins + losses + draws) / (time.time() - start_time), 3)}')
             print(f'wins: {convert_number_to_string(wins)}')
             print(f'draws: {convert_number_to_string(draws)}')
             print(f'losses: {convert_number_to_string(losses)}')
