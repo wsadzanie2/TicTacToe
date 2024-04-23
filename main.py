@@ -37,7 +37,7 @@ lost_state = []
 
 def reverseEnum(data: list):
     for i in range(len(data) - 1, -1, -1):
-        yield (i, data[i])
+        yield i, data[i]
 
 
 def convert_number_to_string(number: int, precision=0):
@@ -344,7 +344,10 @@ while run:
         if mode == 'bots':
             # print(f'--------({(wins + losses + draws) // 1000}k)--------')
             print(f'--------({convert_number_to_string(wins + losses + draws, 2)})--------')
-            print(f'GPS: {convert_number_to_string(int(wins + losses + draws) / (time.time() - start_time), 3)}')
+            try:
+                print(f'GPS: {convert_number_to_string(int(wins + losses + draws) / (time.time() - start_time), 3)}')
+            except ZeroDivisionError:
+                print(f'GPS: ')
             print(f'wins: {convert_number_to_string(wins)}')
             print(f'draws: {convert_number_to_string(draws)}')
             print(f'losses: {convert_number_to_string(losses)}')
