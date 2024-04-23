@@ -206,21 +206,28 @@ def handle_numpad(event):
         handle_num_key(event, K_KP8, 1)
         handle_num_key(event, K_KP9, 2)
 
-
-
-def bot():
-    priority = 'corner'
+def check_rows():
     for row in range(3):
         if two_out_of_three_and_not_None(board[row * 3], board[row * 3 + 1], board[row * 3 + 2]):
             for value in range(3):
                 if board[row * 3 + value] is None:
                     return row * 3 + value
 
+def check_columns():
     for column in range(3):
         if two_out_of_three_and_not_None(board[column], board[column + 3], board[column + 6]):
             for value in range(3):
                 if board[column + (3 * value)] is None:
                     return column + (3 * value)
+
+def bot():
+    priority = 'corner'
+    value = check_rows()
+    if value is not None:
+        return value
+    value = check_columns()
+    if value is not None:
+        return value
 
     # diagonals
     if two_out_of_three_and_not_None(board[0], board[4], board[8]):
