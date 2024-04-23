@@ -342,7 +342,6 @@ while run:
             draws += 1
             board = [None for _ in range(9)]
         if mode == 'bots':
-            # print(f'--------({(wins + losses + draws) // 1000}k)--------')
             print(f'--------({convert_number_to_string(wins + losses + draws, 2)})--------')
             try:
                 print(f'GPS: {convert_number_to_string(int(wins + losses + draws) / (time.time() - start_time), 3)}')
