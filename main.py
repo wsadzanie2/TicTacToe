@@ -185,6 +185,28 @@ def check_corners():
 
     return False
 
+def handle_num_key(event, key, poz):
+    global player
+    if event.key == key:
+        if board[poz] is None and player != bot_player and mode in ('player', 'bot'):
+            board[poz] = player
+            player %= 2
+            player += 1
+
+
+def handle_numpad(event):
+    if event.type == KEYDOWN:
+        handle_num_key(event, K_KP1, 6)
+        handle_num_key(event, K_KP2, 7)
+        handle_num_key(event, K_KP3, 8)
+        handle_num_key(event, K_KP4, 3)
+        handle_num_key(event, K_KP5, 4)
+        handle_num_key(event, K_KP6, 5)
+        handle_num_key(event, K_KP7, 0)
+        handle_num_key(event, K_KP8, 1)
+        handle_num_key(event, K_KP9, 2)
+
+
 
 def bot():
     priority = 'corner'
@@ -386,5 +408,6 @@ while run:
             handle_presses(event)
             button.update(event)
             turn_off_ui_button.update(event)
+            handle_numpad(event)
         if visuals:
             pygame.display.flip()
