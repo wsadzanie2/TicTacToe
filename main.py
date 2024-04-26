@@ -331,7 +331,7 @@ def button_func(self):
         self.text = 'player'
     elif mode == 'players':
         mode = 'bots'
-        self.text = 'bots'
+        self.text = 'bot vs bot'
     elif mode == 'bots':
         mode = 'bot'
         self.text = 'bot'
@@ -339,6 +339,7 @@ def button_func(self):
 
 button = Button(button_func)
 button.text = 'bot'
+button.width = 220
 
 
 def turn_off_ui_function(self):
@@ -387,7 +388,7 @@ change_player_button.y = 0
 clock = pygame.time.Clock()
 
 tick = 0
-frame_diviser = 100
+frame_diviser = 1000
 while run:
     tick += 1
     if visuals and tick % frame_diviser == 0:
@@ -418,7 +419,7 @@ while run:
         elif winner == 'draw':
             draws += 1
             board = [None for _ in range(9)]
-        if mode == 'bots':
+        if mode == 'bots' and not visuals:
             print(f'--------({convert_number_to_string(wins + losses + draws, 2)})--------')
             try:
                 print(f'GPS: {convert_number_to_string(int(wins + losses + draws) / (time.time() - start_time), 3)}')
