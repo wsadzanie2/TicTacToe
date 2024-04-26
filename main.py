@@ -352,12 +352,40 @@ turn_off_ui_button.width = 220
 turn_off_ui_button.color_b = turn_off_ui_button.color_a
 turn_off_ui_button.text = 'bot vs bot'
 
+
+def change_player_function(self):
+    global bot_player, board, player
+    bot_player %= 2
+    bot_player += 1
+    player = 1
+    board = [None for _ in range(9)]
+
+def draw_change_player_button(self):
+    # update position
+    self.rect = pygame.Rect(screen.get_size()[0] - 50, self.y, self.width, self.height)
+
+    # draw
+    pygame.draw.rect(screen, (100, 100, 100), self.rect)
+    if bot_player == 2:
+        draw_x(self.rect.x, self.rect.y, self.width, self.height)
+    elif bot_player == 1:
+        pygame.draw.circle(screen, (0, 255, 0), self.rect.center, (self.rect.width // 2),
+                           8)
+
+
+change_player_button = Button(change_player_function)
+change_player_button.draw = draw_change_player_button
+change_player_button.width = 50
+change_player_button.height = 50
+change_player_button.x = 250
+change_player_button.y = 0
 clock = pygame.time.Clock()
 
 while run:
     if visuals:
         dt = clock.tick()
         screen.fill((75, 75, 75))
+        change_player_button.draw(change_player_button)
         draw_board()
         button.draw()
         turn_off_ui_button.draw()
@@ -441,6 +469,7 @@ while run:
             handle_presses(event)
             button.update(event)
             turn_off_ui_button.update(event)
+            change_player_button.update(event)
             handle_numpad(event)
         if visuals:
             pygame.display.flip()
