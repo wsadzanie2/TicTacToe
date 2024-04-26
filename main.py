@@ -188,7 +188,7 @@ def check_corners():
 def handle_num_key(event, key, poz):
     global player
     if event.key == key:
-        if board[poz] is None and player != bot_player and mode in ('player', 'bot'):
+        if board[poz] is None and (player != bot_player or mode == 'players') and mode in ('players', 'bot'):
             board[poz] = player
             player %= 2
             player += 1
