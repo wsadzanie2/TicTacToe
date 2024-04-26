@@ -27,7 +27,7 @@ bot_player = 2
 
 start_time = time.time()
 
-mode = 'bots'
+mode = 'bot'
 
 if not visuals:
     mode = 'bot'
