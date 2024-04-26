@@ -11,7 +11,7 @@ if visuals:
 
     font = pygame.font.SysFont('', 64)
 
-    screen = pygame.display.set_mode((1360, 900), RESIZABLE)
+    screen = pygame.display.set_mode((1200, 900), RESIZABLE)
 
     pygame.display.set_caption('TicTacToe!')
 
@@ -341,9 +341,9 @@ def turn_off_ui_function(self):
 
 turn_off_ui_button = Button(turn_off_ui_function)
 turn_off_ui_button.y = 210
-turn_off_ui_button.width = 450
+turn_off_ui_button.width = 220
 turn_off_ui_button.color_b = turn_off_ui_button.color_a
-turn_off_ui_button.text = 'Bot Benchmark (TUI)'
+turn_off_ui_button.text = 'bot vs bot'
 
 clock = pygame.time.Clock()
 
@@ -421,6 +421,16 @@ while run:
             elif event.type == VIDEORESIZE:
                 x, y = screen.get_size()
                 size = min(x, y) // 3
+                if x - y > 450:
+                    turn_off_ui_button.width = 450
+                    turn_off_ui_button.text = 'Bot Benchmark (TUI)'
+                elif x - y > 350:
+                    turn_off_ui_button.width = 350
+                    turn_off_ui_button.text = 'Bot Benchmark'
+                elif x - y > 220:
+                    turn_off_ui_button.width = 220
+                    turn_off_ui_button.text = 'bot vs bot'
+
             handle_presses(event)
             button.update(event)
             turn_off_ui_button.update(event)
