@@ -468,8 +468,8 @@ while run:
 
             handle_presses(event)
             button.update(event)
-            turn_off_ui_button.update(event)
             change_player_button.update(event)
             handle_numpad(event)
+            turn_off_ui_button.update(event)
         if visuals:
             pygame.display.flip()
