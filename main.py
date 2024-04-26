@@ -103,7 +103,9 @@ def draw_board():
                 else:
                     color = (60, 60, 60)
                 pygame.draw.rect(screen, color, pygame.Rect(bx * size, by * size, size, size))
-
+        # return if mode == 'bots'. Avoids headaches
+        if mode == 'bots':
+            return
         # draw circles and squares
         for index, square in enumerate(board):
 
@@ -384,8 +386,11 @@ change_player_button.height = 50
 change_player_button.y = 0
 clock = pygame.time.Clock()
 
+tick = 0
+frame_diviser = 100
 while run:
-    if visuals:
+    tick += 1
+    if visuals and tick % frame_diviser == 0:
         dt = clock.tick()
         screen.fill((75, 75, 75))
         change_player_button.draw(change_player_button)
@@ -393,7 +398,7 @@ while run:
         button.draw()
         turn_off_ui_button.draw()
     winner = check_win()
-    if visuals:
+    if visuals and tick % frame_diviser == 0:
         # this variables are for the bot. We want to see data for you!
         for index, thingy in enumerate([f'wins: {losses}', f'draws: {draws}', f'losses: {wins}']):
             font_thingy = font.render(thingy, False, (0, 0, 0))
@@ -446,7 +451,7 @@ while run:
                 print(board[:3])
                 print(board[3:6])
                 print(board[6:9])
-    if visuals:
+    if visuals and tick % frame_diviser == 0:
         for event in pygame.event.get():
             if event.type == QUIT:
                 print(lost_state)
@@ -470,5 +475,5 @@ while run:
             change_player_button.update(event)
             handle_numpad(event)
             turn_off_ui_button.update(event)
-        if visuals:
+        if visuals and tick % frame_diviser == 0:
             pygame.display.flip()
