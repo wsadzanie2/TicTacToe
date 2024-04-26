@@ -87,9 +87,10 @@ class Button:
 
 
 def draw_x(x, y, width, height, thiccness=1):
+    half_thicc = thiccness // 2
     for i in range(5):
-        pygame.draw.line(screen, "blue", (x + i, y), (width + x + i, height + y), thiccness)
-        pygame.draw.line(screen, "blue", (width + x + i, y), (x + i, height + y), thiccness)
+        pygame.draw.line(screen, (0, 0, 255), (x + i + half_thicc, y), (width + x + i - thiccness, height + y), thiccness)
+        pygame.draw.line(screen, (0, 0, 255), (width + x + i - thiccness, y), (x + i + half_thicc, height + y), thiccness)
 
 
 def draw_board():
