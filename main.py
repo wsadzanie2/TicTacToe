@@ -112,7 +112,7 @@ def draw_board():
                 # pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(SIZE * x, SIZE * y, SIZE, SIZE))
                 draw_x(size * x, size * y, size, size, 10)
             elif square == 2:
-                pygame.draw.circle(screen, (0, 255, 0), (size * x + (size // 2), size * y + (size // 2)), (size // 2))
+                pygame.draw.circle(screen, (0, 255, 0), (size * x + (size // 2), size * y + (size // 2)), (size // 2), 25)
 
 
 def two_out_of_three_and_not_None(a: int, b: int, c: int):
