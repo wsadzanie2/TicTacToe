@@ -27,10 +27,10 @@ bot_player = 2
 
 start_time = time.time()
 
-mode = 'bot'
+mode = 'bots'
 
 if not visuals:
-    mode = 'bots'
+    mode = 'bot'
 
 wins, losses, draws = 0, 0, 0
 
@@ -328,6 +328,9 @@ def button_func(self):
         mode = 'players'
         self.text = 'player'
     elif mode == 'players':
+        mode = 'bots'
+        self.text = 'bots'
+    elif mode == 'bots':
         mode = 'bot'
         self.text = 'bot'
 
@@ -378,7 +381,6 @@ change_player_button = Button(change_player_function)
 change_player_button.draw = draw_change_player_button
 change_player_button.width = 50
 change_player_button.height = 50
-change_player_button.x = 250
 change_player_button.y = 0
 clock = pygame.time.Clock()
 
@@ -400,15 +402,11 @@ while run:
     if winner is not None:
         if winner == (bot_player % 2 + 1):
             # pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(0, 0, SIZE * 3.2, SIZE * 3.2))
-            if visuals:
-                screen.fill((0, 0, 255))
             losses += 1
             lost_state = board.copy()
             board = [None for _ in range(9)]
         elif winner == bot_player:
             # pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(0, 0, SIZE * 3.2, SIZE * 3.2))
-            if visuals:
-                screen.fill((0, 255, 0))
             wins += 1
             board = [None for _ in range(9)]
 
