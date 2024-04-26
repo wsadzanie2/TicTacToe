@@ -112,11 +112,13 @@ def draw_board():
                 # pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(SIZE * x, SIZE * y, SIZE, SIZE))
                 draw_x(size * x, size * y, size, size, 10)
             elif square == 2:
-                pygame.draw.circle(screen, (0, 255, 0), (size * x + (size // 2), size * y + (size // 2)), (size // 2), 25)
+                pygame.draw.circle(screen, (0, 255, 0), (size * x + (size // 2), size * y + (size // 2)), (size // 2),
+                                   25)
 
 
 def two_out_of_three_and_not_None(a: int, b: int, c: int):
     return (a == b is not None) or (b == c is not None) or (c == a is not None)
+
 
 def two_out_of_three_and_equals_D(a: int, b: int, c: int, d):
     return (a == b == d) or (b == c == d) or (c == a == d)
@@ -192,6 +194,7 @@ def check_corners():
 
     return False
 
+
 def handle_num_key(event, key, poz):
     global player
     if event.key == key:
@@ -213,6 +216,7 @@ def handle_numpad(event):
         handle_num_key(event, K_KP8, 1)
         handle_num_key(event, K_KP9, 2)
 
+
 def check_rows(player):
     for row in range(3):
         if two_out_of_three_and_equals_D(board[row * 3], board[row * 3 + 1], board[row * 3 + 2], player):
@@ -220,12 +224,14 @@ def check_rows(player):
                 if board[row * 3 + value] is None:
                     return row * 3 + value
 
+
 def check_columns(player):
     for column in range(3):
         if two_out_of_three_and_equals_D(board[column], board[column + 3], board[column + 6], player):
             for value in range(3):
                 if board[column + (3 * value)] is None:
                     return column + (3 * value)
+
 
 def bot():
     priority = 'corner'
@@ -327,6 +333,7 @@ def button_func(self):
 
 button = Button(button_func)
 button.text = 'bot'
+
 
 def turn_off_ui_function(self):
     global visuals, mode, board, winner, start_time
