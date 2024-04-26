@@ -11,7 +11,7 @@ if visuals:
 
     font = pygame.font.SysFont('', 64)
 
-    screen = pygame.display.set_mode((1200, 900), RESIZABLE)
+    screen = pygame.display.set_mode((1360, 900), RESIZABLE)
 
     pygame.display.set_caption('TicTacToe!')
 
@@ -58,6 +58,8 @@ class Button:
         self.rect = pygame.Rect(size * 3, 150, 150, 50)
         self.func = func
         self.y = 150
+        self.width = 150
+        self.height = 50
         self.color_a = (100, 100, 100)
         self.color_b = (0, 100, 100)
         self.color_c = (0, 90, 90)
@@ -68,7 +70,7 @@ class Button:
             return
         global mode
         # update position
-        self.rect = pygame.Rect(size * 3, self.y, 150, 50)
+        self.rect = pygame.Rect(size * 3, self.y, self.width, self.height)
         if mode == 'bot':
             pygame.draw.rect(screen, self.color_a, self.rect)
         elif mode == 'players':
@@ -339,8 +341,9 @@ def turn_off_ui_function(self):
 
 turn_off_ui_button = Button(turn_off_ui_function)
 turn_off_ui_button.y = 210
+turn_off_ui_button.width = 450
 turn_off_ui_button.color_b = turn_off_ui_button.color_a
-turn_off_ui_button.text = 'TUI'
+turn_off_ui_button.text = 'Bot Benchmark (TUI)'
 
 clock = pygame.time.Clock()
 
