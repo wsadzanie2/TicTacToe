@@ -13,6 +13,8 @@ if visuals:
 
     screen = pygame.display.set_mode((1200, 900), RESIZABLE)
 
+    pygame.display.set_caption('TicTacToe!')
+
 run = True
 
 board = [None for _ in range(9)]
@@ -207,14 +209,14 @@ def handle_numpad(event):
         handle_num_key(event, K_KP9, 2)
 
 def check_rows():
-    for row in range(3):
+    for row in [1, 0, 2]:
         if two_out_of_three_and_not_None(board[row * 3], board[row * 3 + 1], board[row * 3 + 2]):
             for value in range(3):
                 if board[row * 3 + value] is None:
                     return row * 3 + value
 
 def check_columns():
-    for column in range(3):
+    for column in [1, 0, 2]:
         if two_out_of_three_and_not_None(board[column], board[column + 3], board[column + 6]):
             for value in range(3):
                 if board[column + (3 * value)] is None:
