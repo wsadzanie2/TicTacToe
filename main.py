@@ -369,22 +369,23 @@ def change_player_function(self):
 
 def draw_change_player_button(self):
     # update position
-    self.rect = pygame.Rect(screen.get_size()[0] - 50, self.y, self.width, self.height)
+    self.rect = pygame.Rect(size * 3, self.y, self.width, self.height)
 
     # draw
     pygame.draw.rect(screen, (100, 100, 100), self.rect)
     if bot_player == 2:
         draw_x(self.rect.x, self.rect.y, self.width, self.height)
+        # screen.blit(font.render('X', True, (0, 0, 0)), self.rect.topleft)
     elif bot_player == 1:
         pygame.draw.circle(screen, (0, 255, 0), self.rect.center, (self.rect.width // 2),
                            8)
-
+        # screen.blit(font.render('O', True, (0, 0, 0)), self.rect.topleft)
 
 change_player_button = Button(change_player_function)
 change_player_button.draw = draw_change_player_button
 change_player_button.width = 50
 change_player_button.height = 50
-change_player_button.y = 0
+change_player_button.y = 270
 clock = pygame.time.Clock()
 
 tick = 0
